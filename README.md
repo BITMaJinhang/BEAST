@@ -128,15 +128,7 @@
 
 🔄 **重启电脑**（建议但非必需）
 
-### 🔧 4.3 若BEAST识别不到BEAGLE
-
-按以下顺序尝试：
-
-1. ✅ 检查安装程序是否已将 BEAGLE 动态库放入系统 `PATH`
-2. 🔧 手动添加 BEAGLE 动态库目录到系统 `PATH` 环境变量
-3. ⚠️ 将动态库放入 BEAST 可加载位置（不推荐新手操作，容易混版本）
-
-### ✅ 4.4 验证 BEAGLE 是否被识别
+### ✅ 4.3 验证 BEAGLE 是否被识别
 
 #### 方法 1：GUI 验证
 
@@ -152,6 +144,14 @@ Set-Location "D:\Software\Tools\BEAST"
 ```
 
 ✅ **成功标志**：能看到可用资源（CPU/GPU）信息
+
+### 🔧 4.4 若BEAST识别不到BEAGLE
+
+按以下顺序尝试：
+
+1. ✅ 检查安装程序是否已将 BEAGLE 动态库放入系统 `PATH`
+2. 🔧 手动添加 BEAGLE 动态库目录到系统 `PATH` 环境变量
+3. ⚠️ 将动态库放入 BEAST 可加载位置（不推荐新手操作，容易混版本）
 
 ### 4.5 常见 BEAGLE 报错与处理
 
@@ -175,7 +175,7 @@ Set-Location "D:\Software\Tools\BEAST"
 
 | 步骤 | 操作                                    |
 | :--: | --------------------------------------- |
-|  1   | 打开 `BEAUti` 或 `Package Manager`      |
+|  1   | 打开 `BEAUti`- file -`Package Manager`  |
 |  2   | 🔍 搜索并安装 **SA** 相关包             |
 |  3   | 🔄 重启 BEAST                           |
 |  4   | ✅ 用 `-validate` 验证 XML 配置是否正确 |
