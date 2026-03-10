@@ -3,6 +3,7 @@
 由于BEAST系列软件的exe文件BUG较多，运行不稳定，且不可修改运行内存，当exe文件运行出错时建议使用命令行方法。
 这份文档给第一次用 BEAST 命令行的人准备。
 三个步骤分别为：
+
 1. 先跑 MCMC（BEAST）
 2. 再整理树文件（LogCombiner）
 3. 最后生成注释树（TreeAnnotator）
@@ -27,6 +28,21 @@
 4. 如需 GPU 加速，准备好 BEAGLE（下面有详细安装步骤）
 5. 如果你的模型使用 SA（Sampled Ancestors）等扩展模型，先在 Package Manager 安装对应包
 
+### 2.1 BEAST 下载链接（官方）
+
+- BEAST 官网下载入口（最新版本）：https://www.beast2.org/
+- 历史版本发布页（含 2.7.7）：https://github.com/CompEvol/beast2/releases
+- BEAST 2.7.7 发布页：https://github.com/CompEvol/beast2/releases/tag/v2.7.7
+
+常用安装包（2.7.7）：
+
+- Windows 压缩包（zip）：[BEAST.v2.7.7.Windows.zip](BEAST.v2.7.7.Windows.zip)（本地文件）
+- Mac 安装包（dmg）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Mac.dmg
+- Linux x86（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.x86.tgz
+- Linux aarch64（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.aarch64.tgz
+
+说明：你可以直接下载对应系统安装包；若后续只做命令行流程，本说明文档中的 `beast.bat`、`logcombiner.bat` 和 `java` 路径保持不变即可。
+
 ## 3. 占位符怎么替换
 
 文档里会出现占位符，请按你的实际情况替换：
@@ -41,7 +57,9 @@
 ## 4. BEAGLE 安装与验证
 
 > 如果你只想先跑通流程，可以跳过 BEAGLE，直接用 CPU 命令。
+
 - 建议使用，通过GPU加速可大幅缩短运算时间
+
 ### 4.1 先判断你是否需要 BEAGLE
 
 - 数据量较大、链很长、机器有 NVIDIA GPU：建议配置 BEAGLE + GPU
@@ -51,7 +69,7 @@
 
 1. 安装/更新显卡驱动（NVIDIA 官方驱动）
 2. 安装 CUDA Runtime（版本与 BEAGLE 二进制兼容）
-（上面两部一般不用额外操作，计算机默认已经具备，仅在出错时考虑）
+   （上面两部一般不用额外操作，计算机默认已经具备，仅在出错时考虑）
 3. 安装 BEAGLE 库（Windows 对应版本，Github：https://github.com/beagle-dev/beagle-lib/releases）
 4. 重启电脑（建议，非必需）
 
@@ -62,6 +80,7 @@
 3. 将相关动态库放在 BEAST 可加载到的位置（不推荐新手手工拷贝，容易混版本）
 
 ### 4.4 验证 BEAGLE 是否被识别
+
 - 法1：打开BEAST.EXE，查看“RUN”按钮左边“BEAGLE INFO”按钮是否存在，点击后是否能检测到GPU型号等信息。
 
 - 法2：在 PowerShell 执行：
@@ -90,6 +109,7 @@ Set-Location "D:\Software\Tools\BEAST"
 如果 XML 用到了 SA 相关模型，但包未安装，会在启动时报包/类找不到。
 
 建议操作：
+
 1. 打开 `BEAUti` 或 `Package Manager`
 2. 搜索并安装 SA 相关包
 3. 重新打开 BEAST
@@ -160,6 +180,7 @@ Get-Location
 ## 8. 步骤二：LogCombiner（tree file + burnin + resample）
 
 你的目标设置是：
+
 - 选择 `tree file`
 - `resample states at lower frequency = 10000`
 - `burnin = 20`
@@ -171,10 +192,12 @@ Get-Location
 ```
 
 关键说明：
+
 - 命令行没有单独 `tree file` 开关
 - 当 `-log` 输入是 `.trees` 文件时，就等价于 GUI 选择 `tree file`
 
 参数解释：
+
 - `-log`：输入日志文件，不要改（ `.log` 或 `.trees`均可传）
 - `-o`：输出文件名
 - `-b 20`：去掉前 20%（burn-in）
@@ -191,6 +214,7 @@ Get-Location
 ```
 
 参数解释：
+
 - `-Xms4g`：初始内存 4G
 - `-Xmx16g`：最大内存 16G（根据电脑最大内存选择，若电脑最大为32G，选择16G，若最大为16G，选择8G；内存选的太小，生成树时内存不足会失败）
 - `-Xss4m`：线程栈大小
