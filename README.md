@@ -32,11 +32,18 @@
 
 - BEAST 官网下载入口（最新版本）：https://www.beast2.org/
 - 历史版本发布页（含 2.7.7）：https://github.com/CompEvol/beast2/releases
-- BEAST 2.7.7 发布页：https://github.com/CompEvol/beast2/releases/tag/v2.7.7
 
-常用安装包（2.7.7）：
+建议使用（2.7.7）版本以兼容插件 SA（2.1.1）：
 
-- Windows 压缩包（zip）：[BEAST.v2.7.7.Windows.zip](BEAST.v2.7.7.Windows.zip)（本地文件）
+- BEAST 2.7.7 Github发布页：https://github.com/CompEvol/beast2/releases/tag/v2.7.7
+
+- Windows 压缩包（zip）：
+
+  直接下载：[BEAST.v2.7.7.Windows.zip](BEAST.v2.7.7.Windows.zip)
+
+  或官网下载：
+  https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Windows.zip
+
 - Mac 安装包（dmg）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Mac.dmg
 - Linux x86（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.x86.tgz
 - Linux aarch64（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.aarch64.tgz
@@ -70,7 +77,15 @@
 1. 安装/更新显卡驱动（NVIDIA 官方驱动）
 2. 安装 CUDA Runtime（版本与 BEAGLE 二进制兼容）
    （上面两部一般不用额外操作，计算机默认已经具备，仅在出错时考虑）
-3. 安装 BEAGLE 库（Windows 对应版本，Github：https://github.com/beagle-dev/beagle-lib/releases）
+3. 安装 BEAGLE 库
+
+   Windows V4.0.0：
+
+   [BEAGLE-4.0.0-win64.msi](BEAGLE-4.0.0-win64.msi)
+
+   其他版本：
+   （Github：https://github.com/beagle-dev/beagle-lib/releases）
+
 4. 重启电脑（建议，非必需）
 
 ### 4.3 若BEAST识别不到BEAGLE
