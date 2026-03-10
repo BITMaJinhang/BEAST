@@ -1,7 +1,9 @@
 # BEAST 三步命令行流程说明（PowerShell）
 
 由于BEAST系列软件的exe文件BUG较多，运行不稳定，且不可修改运行内存，当exe文件运行出错时建议使用命令行方法。
+
 这份文档给第一次用 BEAST 命令行的人准备。
+
 三个步骤分别为：
 
 1. 先跑 MCMC（BEAST）
@@ -32,11 +34,18 @@
 
 - BEAST 官网下载入口（最新版本）：https://www.beast2.org/
 - 历史版本发布页（含 2.7.7）：https://github.com/CompEvol/beast2/releases
-- BEAST 2.7.7 发布页：https://github.com/CompEvol/beast2/releases/tag/v2.7.7
 
-常用安装包（2.7.7）：
+建议使用（2.7.7）版本以兼容插件 SA（2.1.1）：
 
-- Windows 压缩包（zip）：[BEAST.v2.7.7.Windows.zip](BEAST.v2.7.7.Windows.zip)（本地文件）
+- BEAST 2.7.7 Github发布页：https://github.com/CompEvol/beast2/releases/tag/v2.7.7
+
+- Windows 压缩包（zip）：
+
+  直接下载：[BEAST.v2.7.7.Windows.zip](BEAST.v2.7.7.Windows.zip)
+
+  或官网下载：
+  https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Windows.zip
+
 - Mac 安装包（dmg）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Mac.dmg
 - Linux x86（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.x86.tgz
 - Linux aarch64（tgz）：https://github.com/CompEvol/beast2/releases/download/v2.7.7/BEAST.v2.7.7.Linux.aarch64.tgz
@@ -52,7 +61,7 @@
 - `InputTrees.trees`：例如 `24GROUP3-year.trees`
 - `ResampledTrees.trees`：例如 `24GROUP3-year_resample10000_b20.trees`
 - `CombinedTrees.trees`：例如 `V3yueguizuCP127-yueguizuCP131mafftCOM.trees`
-- `AnnotatedTree.tree`：例如 `V3yueguizuCP127-yueguizuCP131mafftCOMmcmc.tree`
+- `AnnotatedTree.tree`：例如 `V3yueguizuCP127-yueguizuCP131mafftMCC.tree`
 
 ## 4. BEAGLE 安装与验证
 
@@ -70,7 +79,15 @@
 1. 安装/更新显卡驱动（NVIDIA 官方驱动）
 2. 安装 CUDA Runtime（版本与 BEAGLE 二进制兼容）
    （上面两部一般不用额外操作，计算机默认已经具备，仅在出错时考虑）
-3. 安装 BEAGLE 库（Windows 对应版本，Github：https://github.com/beagle-dev/beagle-lib/releases）
+3. 安装 BEAGLE 库
+
+   Windows V4.0.0：
+
+   [BEAGLE-4.0.0-win64.msi](BEAGLE-4.0.0-win64.msi)
+
+   其他版本：
+   （Github：https://github.com/beagle-dev/beagle-lib/releases）
+
 4. 重启电脑（建议，非必需）
 
 ### 4.3 若BEAST识别不到BEAGLE
