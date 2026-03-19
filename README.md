@@ -217,7 +217,12 @@ echo $env:BEAST_HOME
 
 ```powershell
 [Environment]::SetEnvironmentVariable("BEAST_HOME", "D:\Software\Tools\BEAST", "User")
+
+# 如果要写入系统变量（所有用户可用），最后一个参数改为 "Machine"
+[Environment]::SetEnvironmentVariable("BEAST_HOME", "D:\Software\Tools\BEAST", "Machine")
 ```
+
+其中第三个参数含义：`User` = 当前用户；`Machine` = 系统变量（需管理员权限运行 PowerShell）。
 
 **法 2：在系统设置中手动添加**
 
