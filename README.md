@@ -46,9 +46,9 @@
   - ✓ `D:\Software\Tools\BEAST\bat\logcombiner.bat`
   - ✓ `D:\Software\Tools\BEAST\jre\bin\java`
 - [ ] **准备输入文件**：
-  - 📄 `InputModel.xml` - BEAST 模型配置
-  - 🌲 `InputTrees.trees` - MCMC 产生的树日志
-  - 🌲 `CombinedTrees.trees` - 用于注释汇总的树（可用步骤二输出）
+  - 📄 `Input.xml` - BEAST 模型配置
+  - 🌲 `OriginalTrees.trees` - MCMC 产生的树日志(第一步的输出)
+  - 🌲 `CombinedTrees.trees` - 用于注释汇总的树（第二步的输出）
 - [ ] **（可选）GPU 加速**：安装 BEAGLE 库
 - [ ] **（可选）扩展模型**：在 Package Manager 安装 SA 等插件包
 
@@ -82,14 +82,13 @@
 
 > 📝 文档中使用占位符表示需要替换的内容，请按你的实际情况修改
 
-| 占位符                 | 说明             | 示例                                          |
-| ---------------------- | ---------------- | --------------------------------------------- |
-| `BEAST_HOME`           | 🏠 BEAST 根目录  | `D:\Software\Tools\BEAST`                     |
-| `InputModel.xml`       | 📄 输入 XML 模型 | `24GROUP3.xml`                                |
-| `InputTrees.trees`     | 🌲 MCMC 输出树   | `24GROUP3-year.trees`                         |
-| `ResampledTrees.trees` | 🔄 重采样后的树  | `24GROUP3-year_resample10000_b20.trees`       |
-| `CombinedTrees.trees`  | 🌳 合并后的树    | `V3yueguizuCP127-yueguizuCP131mafftCOM.trees` |
-| `AnnotatedTree.tree`   | ✨ 最终注释树    | `V3yueguizuCP127-yueguizuCP131mafftMCC.tree`  |
+| 占位符                 | 说明             | 示例                      |
+| ---------------------- | ---------------- | ------------------------- |
+| `$env:BEAST_HOME`      | 🏠 BEAST 根目录  | `D:\Software\Tools\BEAST` |
+| `Input.xml`            | 📄 输入 XML 模型 | `24GROUP3.xml`            |
+| `OriginalTrees.trees`  | 🌲 MCMC 输出树   | `24GROUP3.trees`          |
+| `CombinedTrees.trees`  | 🌳 合并后的树    | `24GROUP3COM.trees`       |
+| `AnnotatedTrees.trees` | ✨ 最终注释树    | `24GROUP3MCC.trees`       |
 
 ---
 
@@ -139,7 +138,6 @@
 #### 方法 2：命令行验证
 
 ```powershell
-Set-Location "D:\Software\Tools\BEAST"
 .\bat\beast.bat -beagle_info
 ```
 
@@ -183,7 +181,7 @@ Set-Location "D:\Software\Tools\BEAST"
 **验证命令：**
 
 ```powershell
-& "D:\Software\Tools\BEAST\bat\beast.bat" -validate "D:\Software\Tools\BEAST\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -validate "$env:BEAST_HOME\InputModel.xml"
 ```
 
 > ⚠️ **版本兼容性警告**  
@@ -201,13 +199,42 @@ Set-Location "D:\Software\Tools\BEAST"
 - 按 `Win + X` → 选择 **Windows PowerShell**
 - 或搜索框输入 `powershell`
 
-**2️⃣ 切换到 BEAST 目录**
+**2️⃣ 设置/修改 `$env:BEAST_HOME`**
+
+临时添加：
 
 ```powershell
-Set-Location "D:\Software\Tools\BEAST"
+# 当前 PowerShell 会话临时生效（推荐先用这个测试）
+$env:BEAST_HOME = "D:\Software\Tools\BEAST"
+
+# 检查是否设置成功
+echo $env:BEAST_HOME
 ```
 
-**3️⃣ 确认当前目录**
+永久保存（建议使用，但是注意 BEAST 安装目录变更后需要更新），执行：
+
+**法 1：命令行写入用户环境变量**
+
+```powershell
+[Environment]::SetEnvironmentVariable("BEAST_HOME", "D:\Software\Tools\BEAST", "User")
+```
+
+**法 2：在系统设置中手动添加**
+
+1. 打开 **系统属性** → **高级** → **环境变量** （或 Win + S 直接搜索打开 **环境变量** ）
+2. 在“xx用户变量”（仅对此登录用户生效）或 “系统变量“ （对此计算机所有用户生效）区域点击 **新建**
+3. 变量名填 `BEAST_HOME`，变量值填BEAST 安装目录，如： `D:\Software\Tools\BEAST`
+4. 连续点击 **确定** 保存
+
+修改后**重开 PowerShell**，再执行 `echo $env:BEAST_HOME` 确认，输出为安装目录即成功。
+
+**3️⃣ 切换到 BEAST 目录**
+
+```powershell
+Set-Location "$env:BEAST_HOME"
+```
+
+**4️⃣ 确认当前目录**
 
 ```powershell
 Get-Location
@@ -230,7 +257,13 @@ Get-Location
 ### 🚀 7.1 GPU 版（推荐）
 
 ```powershell
-& "BEAST_HOME\bat\beast.bat" -beagle -beagle_GPU -beagle_order 1 -threads 12 -instances 1 -beagle_scaling dynamic "BEAST_HOME\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -beagle -beagle_GPU -beagle_order 1 -threads 12 -instances 1 -beagle_scaling dynamic "$env:BEAST_HOME\InputModel.xml"
+```
+
+在 `$env:BEAST_HOME` 路径下运行（相对路径）：
+
+```powershell
+.\bat\beast.bat -beagle -beagle_GPU -beagle_order 1 -threads 12 -instances 1 -beagle_scaling dynamic .\InputModel.xml
 ```
 
 > 💻 **适用场景**：已安装 BEAGLE + NVIDIA GPU
@@ -238,7 +271,13 @@ Get-Location
 ### ⚡ 7.2 CPU 版（通用）
 
 ```powershell
-& "BEAST_HOME\bat\beast.bat" -threads 12 -instances 1 -beagle_scaling dynamic "BEAST_HOME\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -threads 12 -instances 1 -beagle_scaling dynamic "$env:BEAST_HOME\InputModel.xml"
+```
+
+在 `$env:BEAST_HOME` 路径下运行（相对路径）：
+
+```powershell
+.\bat\beast.bat -threads 12 -instances 1 -beagle_scaling dynamic .\InputModel.xml
 ```
 
 > 🔰 **适用场景**：无 GPU 或测试阶段
@@ -287,7 +326,13 @@ Get-Location
 ### 💻 执行命令
 
 ```powershell
-.\bat\logcombiner.bat -log .\InputTrees.trees -o .\ResampledTrees.trees -b 20 -resample 10000
+& "$env:BEAST_HOME\bat\logcombiner.bat" -log "$env:BEAST_HOME\InputTrees.trees" -o "$env:BEAST_HOME\CombinedTrees.trees" -b 20 -resample 10000
+```
+
+在 `$env:BEAST_HOME` 路径下运行（相对路径）：
+
+```powershell
+.\bat\logcombiner.bat -log .\InputTrees.trees -o .\CombinedTrees.trees -b 20 -resample 10000
 ```
 
 ### 📖 参数说明
@@ -310,7 +355,13 @@ Get-Location
 ### 💻 执行命令
 
 ```powershell
-& "BEAST_HOME\jre\bin\java" -Xms4g -Xmx16g -Xss4m -cp "BEAST_HOME\lib\launcher.jar" beast.pkgmgmt.launcher.TreeAnnotatorLauncher -burnin 0 -height median "BEAST_HOME\CombinedTrees.trees" "BEAST_HOME\AnnotatedTree.tree"
+& "$env:BEAST_HOME\jre\bin\java" -Xms4g -Xmx16g -Xss4m -cp "$env:BEAST_HOME\lib\launcher.jar" beast.pkgmgmt.launcher.TreeAnnotatorLauncher -burnin 0 -height median "$env:BEAST_HOME\CombinedTrees.trees" "$env:BEAST_HOME\AnnotatedTree.tree"
+```
+
+在 `$env:BEAST_HOME` 路径下运行（相对路径）：
+
+```powershell
+& ".\jre\bin\java" -Xms4g -Xmx16g -Xss4m -cp ".\lib\launcher.jar" beast.pkgmgmt.launcher.TreeAnnotatorLauncher -burnin 0 -height median ".\CombinedTrees.trees" ".\AnnotatedTree.tree"
 ```
 
 ### 📖 参数说明
@@ -338,7 +389,7 @@ Get-Location
 
 ## 🔟 完整命令模板（一键复制）
 
-> 📋 **使用说明**：复制以下代码块，替换 `BEAST_HOME` 等占位符后直接运行
+> 📋 **使用说明**：先确认 `$env:BEAST_HOME` 已正确设置，再替换 `InputModel.xml`、`InputTrees.trees` 等文件名占位符后运行
 
 ```powershell
 # ============================================
@@ -346,24 +397,23 @@ Get-Location
 # ============================================
 
 # 📂 0) 进入 BEAST 目录
-Set-Location "BEAST_HOME"
 
 # ✅ 1) 可选：验证 XML 是否能解析
-& "BEAST_HOME\bat\beast.bat" -validate "BEAST_HOME\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -validate "$env:BEAST_HOME\InputModel.xml"
 
 # 🔬 2) 运行 MCMC 采样
 
 # 方式A：CPU 版（通用）
-& "BEAST_HOME\bat\beast.bat" -threads 12 -instances 1 -beagle_scaling dynamic "BEAST_HOME\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -threads 12 -instances 1 -beagle_scaling dynamic "$env:BEAST_HOME\InputModel.xml"
 
 # 方式B：GPU 加速版（需 BEAGLE）
-& "BEAST_HOME\bat\beast.bat" -beagle -beagle_GPU -beagle_order 1 -threads 12 -instances 1 -beagle_scaling dynamic "BEAST_HOME\InputModel.xml"
+& "$env:BEAST_HOME\bat\beast.bat" -beagle -beagle_GPU -beagle_order 1 -threads 12 -instances 1 -beagle_scaling dynamic "$env:BEAST_HOME\InputModel.xml"
 
 # 🔄 3) 处理树文件（burnin 20% + 降采样 10000）
-.\bat\logcombiner.bat -log .\InputTrees.trees -o .\ResampledTrees.trees -b 20 -resample 10000
+.\bat\logcombiner.bat -log .\InputTrees.trees -o .\CombinedTrees.trees -b 20 -resample 10000
 
 # 🌳 4) 生成注释树（MCC）
-& "BEAST_HOME\jre\bin\java" -Xms4g -Xmx16g -Xss4m -cp "BEAST_HOME\lib\launcher.jar" beast.pkgmgmt.launcher.TreeAnnotatorLauncher -burnin 0 -height median "BEAST_HOME\CombinedTrees.trees" "BEAST_HOME\AnnotatedTree.tree"
+& "$env:BEAST_HOME\jre\bin\java" -Xms4g -Xmx16g -Xss4m -cp "$env:BEAST_HOME\lib\launcher.jar" beast.pkgmgmt.launcher.TreeAnnotatorLauncher -burnin 0 -height median "$env:BEAST_HOME\CombinedTrees.trees" "$env:BEAST_HOME\MCCTree.tree"
 
 # ✅ 完成！
 ```
